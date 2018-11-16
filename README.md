@@ -2,6 +2,7 @@
 
 
 Author: Attila Kovacs `<attila.kovacs[AT]cfa.harvard.edu>`
+
 Version: 15 November 2018
 
 
@@ -98,13 +99,13 @@ Version: 15 November 2018
  On the __MCE computer__ (e.g. `bicep53`) check that you have RSA key pairs in
  `~/.ssh`:
 
-   > cd ~/.ssh
-   > ls
+    > cd ~/.ssh
+    > ls
 
  You should see files named as `id_rsa` and `id_rsa.pub`. If you do not have
  them, then you need to create them now:
 
-   > ssh-keygen
+    > ssh-keygen
  
  When it asks for a passphrase, just hit `<Enter>` (no passphrase).
 
