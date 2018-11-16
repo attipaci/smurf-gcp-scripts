@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Tunes SMURF resonators to with last search values.
+#
+# Author: Attila Kovacs
+# Version: 23 October 2018
+
+
+echo "Use last SMURF tuning..."
+$HOME/smurf_cmd --last-tune
+
+return $?

@@ -1,0 +1,21 @@
+#!/bin/bash
+#
+# Converts the input bias counts for the typical Keck system into bias currents
+# (uA) to use with SMURF commands.
+#
+# Author: Attila Kovacs
+# Version: 23 October 2018
+
+# DAC resolution as number of bits
+BIAS_BITS=16
+
+# The DAC max output voltage (V)
+BIAS_MAX=2.5
+
+# The bias resistor (Ohm)
+BIAS_R=400.0
+
+# Prints the current value (uA) that is equivalent to the input DAC counts
+echo "scale=6; 1000000.0 * $BIAS_MAX / (2^($BIAS_BITS - 1)) * $1 / $BIAS_R" | bc
+
+

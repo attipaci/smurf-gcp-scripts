@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Stop acquisition with SMURF
+#
+# Author: Attila Kovacs
+# Version: 23 October 2018
+
+
+echo "Stop acquisition with SMURF..."
+$HOME/smurf_cmd --stop-acq
+
+return $?

@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+# Add the SMURF FRAMEACQ tags to the current runfile.
+#
+# Author: Attila Kovacs
+# Version: 23 October 2018
+
+
+NFRAMES=-1
+if [ -f $HOME/smurf/scripts/state/nframes ] ; then
+  NFRAMES=`cat $HOME/smurf/scripts/state/nframes` 
+fi
+
+
+echo "<FRAMEACQ>"
+echo "  <RUNFILE_VERSION> 2"
+echo "  <MAS_VERSION> SMURF"
+echo "  <ARRAY_ID> keck4_d2"
+echo "  <RC> s"
+echo "  <DATA_FILENAME> /data/cryo/current_data/ramp_test"
+echo "  <DATA_FRAMECOUNT> $NFRAMES"
+echo "  <CTIME> $(date +%s)"
+echo "  <HOSTNAME> $(uname -n)"
+echo "</FRAMEACQ>"
+
+
+return $?

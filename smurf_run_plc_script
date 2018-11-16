@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+# Generate partial IV curve data using the terporary saved parameters...
+#
+# Author: Attila Kovacs
+# Version: 23 October 2018
+
+PLC_FILE=$HOME/smurf/scripts/state/plc.parms
+
+source $PLC_FILE
+
+if [ "$STREAM_ON" -gt "0" ] ; then
+ $HOME/smurf/scripts/smurf_make_runfile
+ $HOME/smurf/scripts/smurf_frameacq_stamp >> /data/cryo/mas_data_pipe.run
+fi
+
+echo "Generate a partial IV curve SMURF..."
+$HOME/smurf_cmd --iv-curve ---iv-bias-high-current $BIAS_START --iv-bias-low-current 0 --iv-bias-step-currrent $BIAS_STEP --iv-wait-time $BIAS_DWELL
+
+return $?

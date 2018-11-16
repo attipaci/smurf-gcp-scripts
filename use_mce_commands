@@ -1,0 +1,59 @@
+#!/bin/bash
+#
+# Switch to using the native MCE-version of common commands, such as mce_cmd or
+# mce_tes_bias...
+#
+# Author: Attila Kovacs <attila.kovacs@cfa.harvard.edu>
+# Version: 15 November 2018
+#
+
+MCESCRIPTS="$HOME/gcp/masd/keck/scripts"
+
+CURRENT_DIR=`pwd`
+
+cd /usr/mce/bin
+
+# Link mce_cmd to the original MCE version...
+if [ -f mce_cmd.mce ] ; then
+  rm -f mce_cmd
+  ln -s mce_cmd.smurf mce_cmd
+fi
+
+# Link mce_status to the original MCE version...
+if [ -f mce_status.mce ] ; then
+  rm -f mce_status
+  ln -s mce_status.smurf mce_status
+fi
+
+cd /usr/mce/script
+
+# Link mce_zero_bias to the original MCE version...
+if [ -f mce_zero_bias.mce ] ; then
+  rm -f mce_zero_bias
+  ln -s mce_zero_bias.smurf mce_zero_bias
+fi
+
+cd $CURRENT_DIR
+
+
+if [ ! -d $MCESCRIPTS/mce ] ; then
+  echo "Original MCE scripts are still in place in $MCESCRIPTS"
+  exit 0
+fi
+
+
+# Remove all existing symlinks from the MASD scripts folder
+source $SCRIPTS/remove_command_links.sh
+
+CURRENT_DIR=`pwd`
+cd $MCESCRIPTS
+
+# Create symlinks for all the MCE bash scripts in the MASD scripts folder
+for command in mce/* ; do
+  ln -s $command .
+done
+
+cd $CURRENT_DIR
+
+echo "Using MCE-version of common commands..."
+

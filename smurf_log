@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Adds the specified log entry to SMURF
+#
+# Author: Attila Kovacs
+# Version: 23 October 2018
+
+
+echo "Adding SMURF log entry..."
+$HOME/smurf_cmd --log "$*"
+
+return $?

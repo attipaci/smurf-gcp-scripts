@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Finds and optimizes SMURF resonators
+#
+# Author: Attila Kovacs
+# Version: 23 October 2018
+
+
+echo "Auto-tune SMURF..."
+$HOME/smurf_cmd --tune 
+
+return $?

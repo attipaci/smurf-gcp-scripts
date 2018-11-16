@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Disables SMURF TES bias
+#
+# Author: Attila Kovacs
+# Version: 23 October 2018
+
+
+echo "Disable SMURF TES bias..."
+$HOME/smurf_cmd --tes-bias --bias-voltage 0
+
+return $?

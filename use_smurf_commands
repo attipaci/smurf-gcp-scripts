@@ -1,0 +1,98 @@
+#!/bin/bash
+#
+# Switch to using the SMURF-version of common commands, such as mce_cmd or
+# mce_tes_bias, and scripts such as mce_start_acq or mce_tes_bias...
+#
+# Author: Attila Kovacs <attila.kovacs@cfa.harvard.edu>
+# Version: 15 November 2018
+#
+
+SCRIPTS="$HOME/smurf/scripts"
+MCESCRIPTS="$HOME/gcp/masd/keck/scripts"
+
+CURRENT_DIR=`pwd`
+
+# Create a state directory in $SCRIPTS, if not there already...
+if [ ! -d $SCRIPTS/state ] ; then
+  mkdir $SCRIPTS/state
+fi
+
+# Link the SMURF versions of programs/scripts in /usr/mce
+# But first check if the originals have been backed up with .mce extensions.
+# Also create symlinks to .smurf versions here...
+cd /usr/mce/bin
+
+# Link mce_cmd to the SMuRF version...
+if [ -f mce_cmd.mce ] ; then
+  rm -f mce_cmd
+else
+  mv mce_cmd mce_cmd.mce
+  chmod a-w mce_cmd.mce
+  ln -s $SCRIPTS/mce_cmd mce_cmd.smurf
+fi
+
+ln -s mce_cmd.smurf mce_cmd
+
+
+# Link mce_status to the SMuRF version...
+if [ -f mce_status.mce ] ; then
+  rm -f mce_status
+else
+  mv mce_status mce_status.mce
+  chmod a-w mce_status.mce
+  ln -s $SCRIPTS/smurf_make_runfile mce_status.smurf
+fi
+
+ln -s mce_status.smurf mce_status
+
+cd /usr/mce/script
+
+# Link mce_zero_bias to the SMuRF version...
+if [ -f mce_zero_bias.mce ] ; then
+  rm -f mce_zero_bias
+else
+  mv mce_zero_bias mce_zero_bias.mce
+  chmod a-w mce_zero_bias.mce
+  ln -s $SCRIPTS/smurf_zero_bias mce_zero_bias.smurf
+fi
+
+ln -s mce_zero_bias.smurf mce_zero_bias
+
+
+# Create links for smurf_cmd and smurf_sh in $HOME
+cd $HOME
+
+if [ ! -e smurf_cmd ] ; then
+  ln -s $SCRIPTS/smurf_cmd .
+fi
+
+if [ ! -e smurf_sh ] ; then
+  ln -s $SCRIPTS/smurf_sh .
+fi
+
+# Back up the original MCE scripts in gcp/masd/keck/scripts
+if [ ! -d $MCESCRIPTS/mce ]; then
+  echo "Making a backup of the original MASD/MCE scripts..." 
+  mkdir -P $MCESCRIPTS/mce
+  mv $MCESCRIPTS/* $MCESCRIPTS/mce/
+fi
+
+cd $CURRENT_DIR
+
+# Remove all existing symlinks from the MASD scripts folder
+source $SCRIPTS/remove_command_links.sh
+
+# Create links for the SMURF commands in the MASD scripts folder.
+ln -s $SCRIPTS/smurf_start_acq $MCESCRIPTS/mce_fast_pipe
+ln -s $SCRIPTS/smurf_autotune $MCESCRIPTS/mce_autotune
+ln -s $SCRIPTS/smurf_lasttune $MCESCRIPTS/mce_lasttune
+ln -s $SCRIPTS/smurf_usetune $MCESCRIPTS/mce_usetune
+ln -s $SCRIPTS/smurf_bias_bump $MCESCRIPTS/mce_bias_bump
+ln -s $SCRIPTS/smurf_full_loadcurve $MCESCRIPTS/mce_full_loadcurve
+ln -s $SCRIPTS/smurf_partial_loadcurve $MCESCRIPTS/mce_partial_loadcurve
+ln -s $SCRIPTS/smurf_make_plc_script $MCESCRIPTS/mce_make_plc_script
+ln -s $SCRIPTS/smurf_run_plc_script $MCESCRIPTS/mce_run_plc_script
+ln -s $SCRIPTS/smurf_soft_reset $MCESCRIPTS/check_disable_reset
+
+echo "Using SMURF-version of common commands..."
+

@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Soft resets the SMURF hardware
+#
+# Author: Attila Kovacs
+# Version: 23 October 2018
+
+
+echo "Soft reset SMURF..."
+$HOME/smurf_cmd --soft-reset 
+
+return $?

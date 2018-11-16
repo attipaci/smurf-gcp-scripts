@@ -1,0 +1,30 @@
+#!/bin/bash
+#
+# Start acquisition with SMURF
+#
+# Arguments:
+#
+#   1 -- Number of frames to acquire, or <= 0 for continuous
+#   2 -- Readout card (1-4) or 's' for all. (Ignored by SMuRF)
+#   3 -- (optional) New number of frames to average before send (SMuRF ignored)
+#   4 -- (optional) Number of rows to send
+#
+# Author: Attila Kovacs
+# Version: 15 November 2018
+
+# If a data_rate argument is given that use it to override the syncbox value
+if [ "$#" -ge "3" ] ; then
+  DATA_RATE=$3
+fi
+
+echo $1 > $HOME/smurf/scripts/state/nframes
+echo $2 > $HOME/smurf/scripts/state/rc
+
+if [ "$#" -ge "4" ] ; then
+  echo $4 > $HOME/smurf/scripts/state/num_rows_reported
+fi
+
+echo "Start acquisition with SMURF..."
+$HOME/smurf_cmd --start-acq --n-frames $1 --num-rows-reported $4
+
+return $?

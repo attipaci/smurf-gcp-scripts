@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Use the tuning stored in the specified path argument
+#
+# Author: Attila Kovacs
+# Version: 23 October 2018
+
+
+echo "Use SMURF tuning at $1..."
+$HOME/smurf_cmd --use-tune $1
+
+return $?

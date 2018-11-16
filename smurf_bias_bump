@@ -1,0 +1,36 @@
+#!/bin/bash
+#
+# Bump the SMURF TES detector biases up and down...
+#
+# Usage: smurf_bias_bump <increment-counts> <dwell-time> <interval>
+#
+# Arguments:
+#   $1 -- Bias increment in DAC counts. (Ignored by SMuRF)
+#   $2 -- Dwell time (s) after bias step.
+#   $3 -- Interval (s) between up and down steps. (Ignored by SMuRF)
+#
+# Author: Attila Kovacs
+# Version: 23 October 2018
+
+BIAS_INCREMENT=20
+DWELL=5
+INTERVAL=3
+
+
+if [ "$#" -ge "1" ] ; then
+  BIAS_INCREMENT=$1
+fi
+
+if [ "$#" -ge "2" ] ; then
+  DWELL=$2
+fi
+
+if [ "$#" -ge "3" ] ; then
+  INTERVAL=$3
+fi
+
+echo "SMURF bias bumping..."
+
+$HOME/smurf_cmd --tes-bump --tes-bump-wait $DWELL
+
+return $?

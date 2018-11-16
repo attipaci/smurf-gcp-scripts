@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+# Author: Attila Kovacs <attila.kovacs@cfa.harvard.edu>
+# Version: 17 October 2018
+#
+# Fake mce_cmd for SMURF for implementing GCP commands 'mce_start_acq' and
+# 'mce_tes_bias' with their SMuRF equivalents:
+#
+#   mce_cmd -x stop rcs ret_dat -> smurf_stop_acq
+# 
+#   mce_cmd -qx wra tes bias <rc> <counts> -> smurf_tes_bias <rc> <counts>
+#
+# If the arguments match none of the patterns above, this wrapper will simply 
+# ignore the mce_cmd, and return 0 (i.e. success).
+
+ARGS=$*
+
+# Record the last mce command in the log directory
+echo "'$ARGS'" > $HOME/smurf/scripts/log/last_mce_cmd
+
+if [ "$ARGS" == "-x stop rcs ret_dat" ]; then
+  echo "SMURF: stop acquisition command received."
+  $HOME/smurf/scripts/smurf_stop_acq
+
+elif [ "$ARGS" == "-qx wra tes bias" ]; then
+  echo "SMURF: TES bias command received."
+  $HOME/smurf/scripts/smurf_tes_bias $5 $6
+
+else
+  echo "SMURF: ignoring unmatched mce_cmd..."
+fi 
+
+

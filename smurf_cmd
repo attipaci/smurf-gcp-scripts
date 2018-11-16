@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+# Calls smurf_cmd.py on smurf_srv with the supplied arguments.
+# It also logs the SMuRF command that is requested in an appropriate log
+# file by date.
+#
+# Author: Attila Kovacs <attila.kovacs@cfa.harvard.edu>
+# Version: 15 November 2018
+#
+
+# Write a timestamped log of what command we are executing...
+
+DATE=`date -u +%Y-%m-%d`
+TIME=`date -u +%H:%M:%S`
+
+LOGDIR="/home/bicep/smurf/scripts/log"
+
+# Create the log directory if not already present...
+if [ ! -e $LOGDIR ] ; then
+  mkdir $LOGDIR
+fi
+
+LOG="$LOGDIR/$DATE.log"
+
+# Create a log file for the given date if not already present...
+if [ ! -f $LOG ] ; then
+  echo "# SMURF command forwarding log for $DATE" > $LOG
+fi
+
+# Add a timestamped log entry of the smurf_cmd and arguments...
+echo "$TIME smurf_cmd.py $*" >> $LOG
+
+# Call smurf_cmd.py on via SSH tunnel to the SMuRF computer...
+$HOME/smurf_sh /home/cryo/pysmurf/command/smurf_cmd.py ${1+"$@"}
+
+# Return with the result of the remote smurf_cmd.py call...
+return $?
+

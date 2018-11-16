@@ -1,0 +1,62 @@
+#!/bin/bash
+#
+# This script writes the partial loadcurve parameters to a temporary file
+# (itself a bash snipplet).
+# 
+# Arguments:
+#   $1 -- (optional) Stream data? (1 or 0)
+#   $2 -- (optional) Starting bias value (DAC counts)
+#   $3 -- (optional) Ending bias value (DAC counts)
+#   $4 -- (optional) Bias step (DAC counts)
+#  
+#
+# Author: Attila Kovacs
+# Version: 23 October 2018
+
+BIAS_CONVERT="$HOME/smurf/scripts/smurf_bias_convert"
+
+STREAM_ON="0"
+BIAS_START=`$BIAS_CONVERT 5000`
+BIAS_STEP=`$BIAS_CONVERT -10`
+BIAS_DWELL="0.01"
+
+
+
+if [ "$#" -ge "1" ] ; then
+  STREAM_ON=$1
+fi
+
+if [ "$#" -ge "2" ] ; then
+  BIAS_START=`$BIAS_CONVERT $2`
+fi
+
+if [ "$#" -ge "3" ] ; then
+  BIAS_STEP=`$BIAS_CONVERT $3`
+fi
+
+if [ "$#" -ge "4" ] ; then
+  BIAS_DWELL=$4
+fi
+
+
+PLC_FILE=$HOME/smurf/scripts/state/plc.parms
+
+if [ -f $PLC_FILE ] ; then
+  rm -f $PLC_FILE
+fi
+
+echo "#!/bin/bash" > $PLC_FILE
+echo "#" >> $PLC_FILE
+echo "# SMURF Partial load curve parameters (script generated)." >> $PLC_FILE
+echo "#" >> $PLC_FILE
+
+echo "STREAM_ON=$STREAM_ON" >> $PLC_FILE
+echo "BIAS_START=$BIAS_START" >> $PLC_FILE
+echo "BIAS_STEP=$BIAS_STEP" >> $PLC_FILE
+echo "BIAS_DWELL=$BIAS_DWELL" >> $PLC_FILE
+
+RESULT=$?
+
+echo "Created temporary partial load-curve parameter file."
+
+return $RESULT

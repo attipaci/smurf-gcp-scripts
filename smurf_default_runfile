@@ -1,0 +1,11 @@
+#!/bin/bash
+#
+# Author: Attila Kovacs <attila.kovacs@cfa.harvard.edu>
+# Version: 23 October 2018
+#
+# Use the default static runfile for GCP
+#
+
+cat $HOME/smurf/scripts/runfile.default > /data/cryo/mas_data_pipe.run
+
+return $?

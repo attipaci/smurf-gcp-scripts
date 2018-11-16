@@ -1,0 +1,48 @@
+#!/bin/bash
+#
+# This script writes the partial loadcurve parameters to a temporary file
+# (itself a bash snipplet).
+# 
+# Arguments:
+#   $1 -- (optional) Stream data? (1 or 0)
+#   $2 -- (optional) Starting bias value (DAC counts)
+#   $3 -- (optional) Ending bias value (DAC counts)
+#   $4 -- (optional) Bias step (DAC counts)
+#  
+#
+# Author: Attila Kovacs
+# Version: 23 October 2018
+
+BIAS_CONVERT="$HOME/smurf/scripts/smurf_bias_convert"
+
+STREAM_ON="0"
+BIAS_START=`$BIAS_CONVERT 10000` 
+BIAS_STEP=`$BIAS_CONVERT -10`
+BIAS_DWELL="0.01"
+
+
+if [ "$#" -ge "1" ] ; then
+  STREAM_ON=$1
+fi
+
+if [ "$#" -ge "2" ] ; then
+  BIAS_START=`$BIAS_CONVERT $2`
+fi
+
+if [ "$#" -ge "3" ] ; then
+  BIAS_STEP=`$BIAS_CONVERT $3`
+fi
+
+if [ "$#" -ge "4" ] ; then
+  BIAS_DWELL=$4
+fi
+
+if [ "$STREAM_ON" -gt "0" ] ; then
+ $HOME/smurf/scripts/smurf_make_runfile
+ $HOME/smurf/scripts/smurf_frameacq_stamp >> /data/cryo/mas_data_pipe.run 
+fi
+
+echo "Generate a partial IV curve SMURF..."
+$HOME/smurf_cmd --slow-iv --iv-bias-high-current $BIAS_START --iv-bias-low-current 0 --iv-bias-step-current $BIAS_STEP --iv-wait-time $BIAS_DWELL
+
+return $?
