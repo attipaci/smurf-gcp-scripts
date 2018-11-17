@@ -16,22 +16,36 @@ cd /usr/mce/bin
 # Link mce_cmd to the original MCE version...
 if [ -f mce_cmd.mce ] ; then
   rm -f mce_cmd
-  ln -s mce_cmd.smurf mce_cmd
+  ln -s mce_cmd.mce mce_cmd
 fi
 
 # Link mce_status to the original MCE version...
 if [ -f mce_status.mce ] ; then
   rm -f mce_status
-  ln -s mce_status.smurf mce_status
+  ln -s mce_status.mce mce_status
 fi
 
-cd /usr/mce/script
+# Indetify the correct MCE script directory under /usr/mce
+if [ -d /usr/mce/script ] ; then
+  cd /usr/mce/script
+elif [ -d /usr/mce/mce_script/script ] ; then
+  cd /usr/mce/mce_script/script
+else
+  echo "WARNING! script directory in /usr/mce not found."
+  if [ -L mce_zero_bias ] ; then
+    echo "         Removing SMuRF version of mce_zero_bias from /usr/mce/bin"
+    rm -f mce_zero_bias
+  fi
+fi
+
 
 # Link mce_zero_bias to the original MCE version...
 if [ -f mce_zero_bias.mce ] ; then
   rm -f mce_zero_bias
-  ln -s mce_zero_bias.smurf mce_zero_bias
+  ln -s mce_zero_bias.mce mce_zero_bias
 fi
+
+
 
 cd $CURRENT_DIR
 
