@@ -152,8 +152,12 @@ Version: 15 November 2018
  On the __MCE computer__ (e.g. `bicep53`):
 
     > cd ~/smurf/scripts
-    > scp syncbox/* <user>@<syncbox-comp>:
+    > scp syncbox/* <user>@<syncbox-comp>:bin/
 
+ The syncbox script is configured to communicate to the SyncBox via 
+ `dev/ttyUSB0` by default (Harvard setup). You may need to log in to the
+ __SyncBox computer__ and edit `bin/syncbox-cmd.py` (line 7) if the SyncBox 
+ is on another port, e.g. `/dev/ttyUSB1` (as seems to be the case at Pole).
 
 
 ## 6. Switch the MCE computer to SMuRF mode for GCP

@@ -87,7 +87,7 @@ fi
 # Back up the original MCE scripts in gcp/masd/keck/scripts
 if [ ! -d $MCESCRIPTS/mce ]; then
   echo "Making a backup of the original MASD/MCE scripts..." 
-  mkdir -P $MCESCRIPTS/mce
+  mkdir -p $MCESCRIPTS/mce
   mv $MCESCRIPTS/* $MCESCRIPTS/mce/
 fi
 
