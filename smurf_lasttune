@@ -9,4 +9,3 @@
 echo "Use last SMURF tuning..."
 $HOME/smurf_cmd --last-tune
 
-return $?

@@ -9,5 +9,3 @@
 # Remore call via SSH tunnel to the SMuRF computer
 ssh -t cryo@131.142.156.47 ${1+"$@"}
 
-# Return with the result of the remote call.
-return $?

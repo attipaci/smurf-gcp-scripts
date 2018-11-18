@@ -9,4 +9,3 @@
 echo "Use SMURF tuning at $1..."
 $HOME/smurf_cmd --use-tune $1
 
-return $?

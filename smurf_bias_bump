@@ -33,4 +33,3 @@ echo "SMURF bias bumping..."
 
 $HOME/smurf_cmd --tes-bump --tes-bump-wait $DWELL
 
-return $?

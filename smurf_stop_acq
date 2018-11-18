@@ -9,4 +9,3 @@
 echo "Stop acquisition with SMURF..."
 $HOME/smurf_cmd --stop-acq
 
-return $?

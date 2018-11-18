@@ -9,4 +9,3 @@
 echo "Adding SMURF log entry..."
 $HOME/smurf_cmd --log "$*"
 
-return $?

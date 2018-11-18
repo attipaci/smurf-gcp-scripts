@@ -45,4 +45,3 @@ fi
 echo "Generate a partial IV curve SMURF..."
 $HOME/smurf_cmd --slow-iv --iv-bias-high-current $BIAS_START --iv-bias-low-current 0 --iv-bias-step-current $BIAS_STEP --iv-wait-time $BIAS_DWELL
 
-return $?

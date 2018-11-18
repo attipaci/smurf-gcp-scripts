@@ -9,4 +9,3 @@
 echo "Soft reset SMURF..."
 $HOME/smurf_cmd --soft-reset 
 
-return $?

@@ -27,4 +27,3 @@ fi
 echo "Start acquisition with SMURF..."
 $HOME/smurf_cmd --start-acq --n-frames $1 --num-rows-reported $4
 
-return $?

@@ -14,4 +14,4 @@ source $HOME/smurf/scripts/state/syncbox
 echo "Create SMURF runfile for GCP..."
 $HOME/smurf_cmd --make-runfile --row-len $ROW_LEN --num-rows $NUM_ROWS --data-rate $DATA_RATE > /data/cryo/mas_data_pipe.run
 
-echo $?
+

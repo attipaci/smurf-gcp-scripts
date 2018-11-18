@@ -9,4 +9,3 @@
 echo "Auto-tune SMURF..."
 $HOME/smurf_cmd --tune 
 
-return $?

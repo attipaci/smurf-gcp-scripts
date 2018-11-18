@@ -24,4 +24,3 @@ echo "  <HOSTNAME> $(uname -n)"
 echo "</FRAMEACQ>"
 
 
-return $?

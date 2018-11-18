@@ -33,6 +33,4 @@ echo "$TIME smurf_cmd.py $*" >> $LOG
 # Call smurf_cmd.py on via SSH tunnel to the SMuRF computer...
 $HOME/smurf_sh /home/cryo/pysmurf/command/smurf_cmd.py ${1+"$@"}
 
-# Return with the result of the remote smurf_cmd.py call...
-return $?
 
