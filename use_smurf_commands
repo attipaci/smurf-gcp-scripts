@@ -25,7 +25,7 @@ cd /usr/mce/bin
 # Link mce_cmd to the SMuRF version...
 if [ -f mce_cmd.mce ] ; then
   rm -f mce_cmd
-else
+elif [ -f mce_cmd ] ; then
   # Create a read-only backup of the MCE original
   mv mce_cmd mce_cmd.mce
   chmod a-w mce_cmd.mce
@@ -37,7 +37,7 @@ ln -s $SCRIPTS/mce_cmd.smurf mce_cmd
 # Link mce_status to the SMuRF version...
 if [ -f mce_status.mce ] ; then
   rm -f mce_status
-else
+elif [ -f mce_status ] ; then
   # Create a read-only backup of the MCE original
   mv mce_status mce_status.mce
   chmod a-w mce_status.mce
@@ -64,13 +64,25 @@ fi
 # Link mce_zero_bias to the SMuRF version...
 if [ -f mce_zero_bias.mce ] ; then
   rm -f mce_zero_bias
-elif [ ! -f mce_zero_bias ] ; then
+elif [ -f mce_zero_bias ] ; then
   # Create a read_only backup of the MCE orginal
   mv mce_zero_bias mce_zero_bias.mce
   chmod a-w mce_zero_bias.mce
 fi
 
-ln -s $SCRIPTS/mce_zero_bias.smurf mce_zero_bias
+ln -s $SCRIPTS/smurf_zero_bias mce_zero_bias
+
+
+# Link bias_tess to the SMuRF version...
+if [ -f bias_tess.mce ] ; then
+  rm -f bias_tess
+elif [ -f bias_tess ] ; then
+  # Create a read_only backup of the MCE orginal
+  mv bias_tess bias_tess.mce
+  chmod a-w bias_tess.mce
+fi
+
+ln -s $SCRIPTS/bias_tess .
 
 
 # Create links for smurf_cmd and smurf_sh in $HOME

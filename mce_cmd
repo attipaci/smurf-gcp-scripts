@@ -13,6 +13,7 @@
 # If the arguments match none of the patterns above, this wrapper will simply 
 # ignore the mce_cmd, and return 0 (i.e. success).
 
+BIAS_CONVERT="$HOME/smurf/scripts/smurf_bias_convert"
 ARGS=$*
 
 # Record the last mce command in the log directory
@@ -24,7 +25,12 @@ if [ "$ARGS" == "-x stop rcs ret_dat" ]; then
 
 elif [ "$ARGS" == "-qx wra tes bias" ]; then
   echo "SMURF: TES bias command received."
-  $HOME/smurf/scripts/smurf_tes_bias $5 $6
+  GROUP=$5
+  if [ "$GROUP" == "s" ] ; then
+    GROUP=-1
+  fi
+  CURRENT=`$BIAS_CONVERT $6`
+  $HOME/smurf_cmd --tes-bias --bias-group $GROUP --bias-current $CURRENT
 
 else
   echo "SMURF: ignoring unmatched mce_cmd..."
