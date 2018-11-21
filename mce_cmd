@@ -8,7 +8,7 @@
 #
 #   mce_cmd -x stop rcs ret_dat -> smurf_stop_acq
 # 
-#   mce_cmd -qx wra tes bias <rc> <counts> -> smurf_tes_bias <rc> <counts>
+#   mce_cmd -qx wra tes bias <rc> <counts> -> smurf_cmd --tes_bias ...
 #
 # If the arguments match none of the patterns above, this wrapper will simply 
 # ignore the mce_cmd, and return 0 (i.e. success).

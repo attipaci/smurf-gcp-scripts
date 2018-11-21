@@ -3,11 +3,11 @@
 # Sets biases on all TESs, either individually with a list of values, or
 # globally with a single argument.
 #
-# Usage: smurf_bias_tess <bias-values>
+# Usage: bias_tess <bias-values>
 #
 # Arguments:
-#  $1 -- A list of values (for each bias line), or else a single value
-#        for all lines (DAC counts).
+#  A list of values (for each bias line), or else a single value
+#  for all lines (DAC counts).
 #
 # Author: Attila Kovacs
 # Version: 21 November 2018
@@ -21,13 +21,12 @@ if [ $# -eq 1 ] ; then
   CURRENT=`$BIAS_CONVERT $1`
   $SCRIPTS/smurf_cmd --tes-bias --bias-group -1 --bias-current $CURRENT
 else
-  CURRENT=""
   GROUP=1
   for value in $* ; do
     echo "Set SMURF TES bias on group $GROUP to $value..."
     CURRENT=`$BIAS_CONVERT $value`
     $SCRIPTS/smurf_cmd --tes-bias --bias-group $GROUP --bias-current $CURRENT
-    GROUP=$((GROUP++))
+    $((GROUP++))
   done
 fi
 
