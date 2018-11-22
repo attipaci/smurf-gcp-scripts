@@ -46,6 +46,12 @@ if [ -f mce_zero_bias.mce ] ; then
   ln -s mce_zero_bias.mce mce_zero_bias
 fi
 
+# Link bias_tess to the original MCE version...
+if [ -f bias_tess.mce ] ; then
+  rm -f bias_tess
+  ln -s bias_tess.mce bias_tess
+fi
+
 
 
 cd $CURRENT_DIR
