@@ -12,17 +12,22 @@
 # Author: Attila Kovacs
 # Version: 15 November 2018
 
+SCRIPTS="$HOME/smurf/scripts"
+
 # If a data_rate argument is given that use it to override the syncbox value
 if [ "$#" -ge "3" ] ; then
   DATA_RATE=$3
 fi
 
-echo $1 > $HOME/smurf/scripts/state/nframes
-echo $2 > $HOME/smurf/scripts/state/rc
+echo $1 > $SCRIPTS/state/nframes
+echo $2 > $SCRIPTS/state/rc
 
 if [ "$#" -ge "4" ] ; then
-  echo $4 > $HOME/smurf/scripts/state/num_rows_reported
+  echo $4 > $SCRIPTS/state/num_rows_reported
 fi
+
+echo "Updating runfile..."
+$SCRIPTS/smurf_make_runfile
 
 echo "Start acquisition with SMURF..."
 $HOME/smurf_cmd --start-acq --n-frames $1 --num-rows-reported $4
