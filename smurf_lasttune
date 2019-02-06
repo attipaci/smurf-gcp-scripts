@@ -9,3 +9,5 @@
 echo "Use last SMURF tuning..."
 $HOME/smurf_cmd --last-tune
 
+# send signal that we're done?
+$GCP_DIR/../scripts/keck/controlSystem command 'signal/send done'

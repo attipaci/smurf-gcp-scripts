@@ -25,65 +25,48 @@ cd /usr/mce/bin
 # Link mce_cmd to the SMuRF version...
 if [ -f mce_cmd.mce ] ; then
   rm -f mce_cmd
-elif [ -f mce_cmd ] ; then
-  # Create a read-only backup of the MCE original
+else
   mv mce_cmd mce_cmd.mce
   chmod a-w mce_cmd.mce
+  ln -s $SCRIPTS/mce_cmd mce_cmd.smurf
 fi
 
-ln -s $SCRIPTS/mce_cmd.smurf mce_cmd
+ln -s mce_cmd.smurf mce_cmd
 
 
 # Link mce_status to the SMuRF version...
 if [ -f mce_status.mce ] ; then
   rm -f mce_status
-elif [ -f mce_status ] ; then
-  # Create a read-only backup of the MCE original
+else
   mv mce_status mce_status.mce
   chmod a-w mce_status.mce
+  ln -s $SCRIPTS/smurf_make_runfile mce_status.smurf
 fi
 
-ln -s $SCRIPTS/mce_status.smurf mce_status
+ln -s mce_status.smurf mce_status
 
-# Identify the correct script directory in /usr/mce.
-# If not found, stay in /usr/mce/bin for installing the SMuRF version of 
-# mce_zero_bias
-if [ -d /usr/mce/script ] ; then
-  cd /usr/mce/script
-elif [ -d /usr/mce/mce_script/script ] ; then
-  cd /usr/mce/mce_script/script
-else
-  echo "WARNING! script directory in /usr/mce not found."
-  echo "         Linking SMuRF version of mce_zero_bias to /usr/mce/bin instead"
-  if [ -L mce_zero_bias ] ; then
-    # remove prior link if exists, so we can renew it below...
-    rm -f mce_zero_bias
-  fi
-fi
+cd /usr/mce/mce_script/script
 
 # Link mce_zero_bias to the SMuRF version...
 if [ -f mce_zero_bias.mce ] ; then
   rm -f mce_zero_bias
-elif [ -f mce_zero_bias ] ; then
-  # Create a read_only backup of the MCE orginal
+else
   mv mce_zero_bias mce_zero_bias.mce
   chmod a-w mce_zero_bias.mce
+  ln -s $SCRIPTS/smurf_all_off mce_zero_bias.smurf
 fi
 
-ln -s $SCRIPTS/smurf_zero_bias mce_zero_bias
+ln -s mce_zero_bias.smurf mce_zero_bias
 
-
-# Link bias_tess to the SMuRF version...
 if [ -f bias_tess.mce ] ; then
   rm -f bias_tess
-elif [ -f bias_tess ] ; then
-  # Create a read_only backup of the MCE orginal
+else
   mv bias_tess bias_tess.mce
   chmod a-w bias_tess.mce
+  ln -s $SCRIPTS/smurf_tes_bias bias_tess.smurf
 fi
 
-ln -s $SCRIPTS/bias_tess .
-
+ln -s bias_tess.smurf bias_tess
 
 # Create links for smurf_cmd and smurf_sh in $HOME
 cd $HOME

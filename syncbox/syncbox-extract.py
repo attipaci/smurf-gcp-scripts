@@ -10,7 +10,7 @@
 import serial
 import time
 
-s = serial.Serial('/dev/ttyUSB0', 9600)
+s = serial.Serial('/dev/ttyUSB1', 9600)
 
 s.write('?\r\n')
 

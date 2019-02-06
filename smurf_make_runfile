@@ -4,14 +4,20 @@
 #
 # Author: Attila Kovacs
 # Version: 15 November 2018
+# Edited CY 16Nov2018 for keck78/79 testing
 
 # Get num_rows / row_len / data rate from the syncbox...
-ssh -t bicep51 bin/syncbox-extract.py > $HOME/smurf/scripts/state/syncbox
+ssh -t keck31 bin/syncbox/syncbox-extract.py > $HOME/smurf/scripts/state/syncbox
 
 # Load the syncbox parameters (shell vars) from the file just created...
 source $HOME/smurf/scripts/state/syncbox
 
 echo "Create SMURF runfile for GCP..."
-$HOME/smurf_cmd --make-runfile --row-len $ROW_LEN --num-rows $NUM_ROWS --data-rate $DATA_RATE > /data/cryo/mas_data_pipe.run
+#$HOME/smurf_cmd --make-runfile --row-len $ROW_LEN --num-rows $NUM_ROWS --num-rows-reported $NUM_ROWS --data-rate $DATA_RATE > /data/cryo/mas_data_pipe.run
+cat $HOME/smurf/scripts/runfile.default.bicep53 > /data/cryo/mas_data_pipe.run
+# shh don't worry about it
+
+# 20181119 temporary for testing only
+#$HOME/smurf_cmd --make-runfile --row-len $ROW_LEN --num-rows $NUM_ROWS --data-rate $DATA_RATE #> ~/cyndia/test_runfile.txt
 
 

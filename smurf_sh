@@ -7,5 +7,5 @@
 #
 
 # Remore call via SSH tunnel to the SMuRF computer
-ssh -t cryo@131.142.156.47 ${1+"$@"}
-
+#ssh -t cryo@smurf-srv03-gcp ${1+"$@"}
+ssh -t cryo@192.168.3.4 ${1+"$@"}

@@ -55,5 +55,12 @@ echo "BIAS_START=$BIAS_START" >> $PLC_FILE
 echo "BIAS_STEP=$BIAS_STEP" >> $PLC_FILE
 echo "BIAS_DWELL=$BIAS_DWELL" >> $PLC_FILE
 
+RESULT=$?
+
 echo "Created temporary partial load-curve parameter file."
 
+#return $RESULT
+echo $RESULT
+
+# signal done
+$GCP_DIR/../scripts/keck/controlSystem command "signal/send done"

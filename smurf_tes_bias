@@ -1,0 +1,75 @@
+#!/bin/bash
+#
+# Sets the SMURF TES bias on the specified group to the specified voltage 
+# value (uV)
+#
+# Usage: run with no arguments for help. 1, 2, or 16 arguments.
+#
+# Arguments:
+#  $1 -- bias for all groups OR readout/bias group (card) number OR bg0 value
+#  $2 -- bias value (DAC counts) OR bg1 value
+#  $3-8 -- (optional) bg2-7 values in DAC units
+#  $9-16 -- (optional) ignored, but must be populated if using the individual bg
+#           setting mode
+#
+# Author: Attila Kovacs
+# Version: 23 October 2018
+# edited CY 20181120 at Pole: take 16 commands and just ignore the last 8 to set
+# bias groups individually
+
+BIAS_CONVERT="$HOME/smurf/scripts/smurf_bias_convert"
+
+
+script_name="smurf_tes_bias"
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $script_name bias_val"
+    echo "   or: $script_name bias_group bias_val"
+    echo "   or: $script_name bias1 bias2 ..."
+    echo
+    echo "That's right, if you pass one value, it gets written to all of your tes bias "
+    echo "lines.  If you pass two, it the first will be taken as the bias group number. "
+    echo "Otherwise, the number of parameters must be equal to you number of "
+    echo "MCE expected bias lines = 16. The first 8 are written to the SMuRF bias lines, "
+    echo "and the last 8 are ignored."
+    echo "Note that if you pass 65000, this is taken as an overbias command that kicks "
+    echo "but then drops down for the remaining period to wait in order to avoid FPU "
+    echo "heating. All other numbers are taken literally and converted via smurf_bias_convert"
+    exit 1
+fi
+
+#number of MCE bias lines expected
+bias_count=16
+
+if [ $# -eq $bias_count ]; then
+    echo "SMuRF: setting TES bias groups 0-7 to DAC units $1, $2, $3, $4, $5, $6, $7, $8"
+
+    # 20190102 CY: using the voltage bias array to make this faster
+    bias_array="`$BIAS_CONVERT $1` `$BIAS_CONVERT $2` `$BIAS_CONVERT $3` `$BIAS_CONVERT $4` `$BIAS_CONVERT $5` `$BIAS_CONVERT $6` `$BIAS_CONVERT $7` `$BIAS_CONVERT $8`"
+    
+    echo "SMuRF: setting TES bias array to $bias_array V"
+    $HOME/smurf_cmd --tes-bias --bias-group -1 --bias-voltage-array \"$bias_array\"
+
+    #done
+elif [ $# -eq 1 ]; then
+    if [ $1 == 65000 ]; then
+        echo "SMuRF: overbias requested, delatching all bias groups"
+      	$HOME/smurf_cmd --overbias-tes --overbias-tes-wait 2
+	# dwell? 
+    else
+        echo "SMuRF: setting all 8 bias groups to $1"
+        VOLTAGE="$($BIAS_CONVERT $1)"
+        # put it on all 8 smurf bias groups
+      	$HOME/smurf_cmd --tes-bias --bias-group -1 --bias-voltage $VOLTAGE
+    fi
+elif [ $# -eq 2 ]; then
+    echo "Set SMuRF TES bias on group $1 to $2..."
+    VOLTAGE="$($BIAS_CONVERT $2)"
+    $HOME/smurf_cmd --tes-bias --bias-group $1 --bias-voltage $VOLTAGE
+else
+    echo "Number of arguments is not 1, 2, or number of expected tes bias lines."
+    echo "Run $0 with no arguments to see usage."
+    exit 1
+fi
+
+

@@ -22,5 +22,3 @@ echo "  <DATA_FRAMECOUNT> $NFRAMES"
 echo "  <CTIME> $(date +%s)"
 echo "  <HOSTNAME> $(uname -n)"
 echo "</FRAMEACQ>"
-
-

@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+# turn off all the power going into cryostat from SMuRF
+# turns off TES biases, flux ramp, and tones
+# does NOT turn off amplifier biases
+
+$HOME/smurf_cmd --all-off

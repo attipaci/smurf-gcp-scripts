@@ -8,13 +8,13 @@
 #
 #   mce_cmd -x stop rcs ret_dat -> smurf_stop_acq
 # 
-#   mce_cmd -qx wra tes bias <rc> <counts> -> smurf_cmd --tes_bias ...
+#   mce_cmd -qx wra tes bias <rc> <counts> -> smurf_tes_bias <rc> <counts>
 #
 # If the arguments match none of the patterns above, this wrapper will simply 
-# ignore the mce_cmd, and return 0 (i.e. success).
+# ignore the mce_cmd, and return 0 (i.e. success). 
 
-BIAS_CONVERT="$HOME/smurf/scripts/smurf_bias_convert"
 ARGS=$*
+BIAS_CONVERT="$HOME/smurf/scripts/smurf_bias_convert"
 
 # Record the last mce command in the log directory
 echo "'$ARGS'" > $HOME/smurf/scripts/log/last_mce_cmd
@@ -23,14 +23,11 @@ if [ "$ARGS" == "-x stop rcs ret_dat" ]; then
   echo "SMURF: stop acquisition command received."
   $HOME/smurf/scripts/smurf_stop_acq
 
-elif [ "$ARGS" == "-qx wra tes bias" ]; then
+elif [[ "$ARGS" == "-qx wra tes bias"* ]]; then
   echo "SMURF: TES bias command received."
-  GROUP=$5
-  if [ "$GROUP" == "s" ] ; then
-    GROUP=-1
-  fi
-  CURRENT=`$BIAS_CONVERT $6`
-  $HOME/smurf_cmd --tes-bias --bias-group $GROUP --bias-current $CURRENT
+  
+  # for now we assume that mce_tes_bias only gives one number, which seems true
+  $HOME/smurf/scripts/smurf_tes_bias $6
 
 else
   echo "SMURF: ignoring unmatched mce_cmd..."

@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+# wrapper for the things that must be run after smurf undergoes a total reboot
+# does NOT include the Joe hammer itself
+
+
+# run setup
+./smurf_setup
+
+# retune. this is a little slow, but must be done after a reboot because our phases come up randomly after the card is powercycled
+./smurf_autotune
+
+#start smurftestserver. will check if masd1 is running first
+./smurf_start_streamreceiver

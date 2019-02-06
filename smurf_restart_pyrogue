@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# restart pyrogue without the Joe hammer restarting everything
+
+$HOME/smurf_sh /home/cryo/smurf2mce/current/mcetransmit/smurf_nogui.sh
+
+sleep 61 # ari's favorite number
+
+# then run setup
+./smurf_setup

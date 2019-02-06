@@ -7,8 +7,8 @@
 # Version: 15 November 2018
 #
 
-SCRIPTS="$HOME/smurf/scripts"
 MCESCRIPTS="$HOME/gcp/masd/keck/scripts"
+SCRIPTS="$HOME/smurf/scripts"
 
 CURRENT_DIR=`pwd`
 
@@ -26,19 +26,7 @@ if [ -f mce_status.mce ] ; then
   ln -s mce_status.mce mce_status
 fi
 
-# Indetify the correct MCE script directory under /usr/mce
-if [ -d /usr/mce/script ] ; then
-  cd /usr/mce/script
-elif [ -d /usr/mce/mce_script/script ] ; then
-  cd /usr/mce/mce_script/script
-else
-  echo "WARNING! script directory in /usr/mce not found."
-  if [ -L mce_zero_bias ] ; then
-    echo "         Removing SMuRF version of mce_zero_bias from /usr/mce/bin"
-    rm -f mce_zero_bias
-  fi
-fi
-
+cd /usr/mce/mce_script/script
 
 # Link mce_zero_bias to the original MCE version...
 if [ -f mce_zero_bias.mce ] ; then
@@ -46,13 +34,10 @@ if [ -f mce_zero_bias.mce ] ; then
   ln -s mce_zero_bias.mce mce_zero_bias
 fi
 
-# Link bias_tess to the original MCE version...
 if [ -f bias_tess.mce ] ; then
   rm -f bias_tess
   ln -s bias_tess.mce bias_tess
 fi
-
-
 
 cd $CURRENT_DIR
 

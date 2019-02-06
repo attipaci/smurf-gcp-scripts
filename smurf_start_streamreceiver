@@ -1,0 +1,42 @@
+#!/bin/bash
+#
+# script to restart smurftestserver in case everything went down
+# honestly it should not go down unless keck34 rebooted
+#
+# CY 20181125
+# AK 20190206
+
+
+# check for another process running
+# currently assumes that if it's running, it would be the first process
+# otherwise you will always get a match from the grep
+#processes=$(ps aux | grep [s]murftestserver)
+
+# there is probably a way to get this from the processes variable
+#jobid=$(echo "$processes" | awk '{print $2}')
+#echo $processes
+#echo $jobid
+
+progname="smurftestserver"
+
+# AK 2019-02-06: A simpler version of the above:
+jobid=`pidof $progname`
+
+# kill prior processes if they exists
+if [ -z "$jobid" ]; then
+  echo "no prior $progname process is running."
+else
+  echo "$progname already running, killing process(es)..."
+  kill $jobid
+fi
+
+# cd into the proper directory, because apparently this script can't run from a different directory
+cd $HOME/smurf_codebase/smurf2mce/mcereceiver/bin/
+
+# start smurftestserver in a new window
+echo "starting smurf test server in a new window"
+xterm -bg lightblue -e screen -S smurftestserver -h 81920 -m $HOME/smurf_codebase/smurf2mce/mcereceiver/bin/smurftestserver &
+
+# start in screen session
+#echo "starting smurf test server in a screen session"
+#screen -S smurftestserver -h 81920 -dm $HOME/smurf_codebase/smurf2mce/mcereceiver/bin/smurftestserver

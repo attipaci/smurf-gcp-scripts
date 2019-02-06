@@ -6,9 +6,8 @@
 # Arguments:
 #   $1 -- (optional) Stream data? (1 or 0)
 #   $2 -- (optional) Starting bias value (DAC counts)
-#   $3 -- (optional) Ending bias value (DAC counts)
-#   $4 -- (optional) Bias step (DAC couunts)
-#  
+#   $3 -- (optional) Bias step (DAC couunts)
+#   $4 -- (optional) Data pause between bias steps (seconds) 
 #
 # Author: Attila Kovacs
 # Version: 23 October 2018
@@ -16,7 +15,7 @@
 BIAS_CONVERT="$HOME/smurf/scripts/smurf_bias_convert"
 
 STREAM_ON="0"
-BIAS_START=`$BIAS_CONVERT 5000`
+BIAS_START=`$BIAS_CONVERT 10000`
 BIAS_STEP=`$BIAS_CONVERT -10`
 BIAS_DWELL="0.01"
 
@@ -44,5 +43,8 @@ if [ "$STREAM_ON" -gt "0" ] ; then
 fi
 
 echo "Generate a partial IV curve SMURF..."
-$HOME/smurf_cmd --slow-iv --iv-bias-high-current $BIAS_START --iv-bias-low-current 0 --iv-bias-step-current $BIAS_STEP --iv-wait-time $BIAS_DWELL
+$HOME/smurf_cmd --slow-iv --iv-bias-high $BIAS_START --iv-bias-low 0 --iv-bias-step $BIAS_STEP --iv-wait-time $BIAS_DWELL
+
+# send signal that we're done?
+$GCP_DIR/../scripts/keck/controlSystem command 'signal/send done'
 

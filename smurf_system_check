@@ -1,0 +1,5 @@
+#!/bin/bash
+#
+# wrapper function for system checking
+
+$HOME/smurf_sh /usr/local/controls/Applications/smurf/smurftestapps/system_check.py

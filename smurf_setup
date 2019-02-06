@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+# set up smurf (loads defaults) after a reboot
+# 20181125 CY
+
+$HOME/smurf_cmd --setup

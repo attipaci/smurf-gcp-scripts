@@ -1,0 +1,5 @@
+#!/bin/bash
+#
+# turn off flux ramp
+
+$HOME/smurf_cmd --flux-ramp-off

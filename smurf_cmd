@@ -9,11 +9,10 @@
 #
 
 # Write a timestamped log of what command we are executing...
-
 DATE=`date -u +%Y-%m-%d`
 TIME=`date -u +%H:%M:%S`
 
-LOGDIR="/home/bicep/smurf/scripts/log"
+LOGDIR="/home/keck/smurf/scripts/log"
 
 # Create the log directory if not already present...
 if [ ! -e $LOGDIR ] ; then
@@ -32,5 +31,4 @@ echo "$TIME smurf_cmd.py $*" >> $LOG
 
 # Call smurf_cmd.py on via SSH tunnel to the SMuRF computer...
 $HOME/smurf_sh /home/cryo/pysmurf/command/smurf_cmd.py ${1+"$@"}
-
 

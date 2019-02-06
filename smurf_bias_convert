@@ -1,21 +1,25 @@
 #!/bin/bash
 #
-# Converts the input bias counts for the typical Keck system into bias currents
-# (uA) to use with SMURF commands.
+# Convert MCE DAC counts to SMuRF DAC biases in V
+# SMuRF commands in volts, not current, so this is slightly cleaner
 #
-# Author: Attila Kovacs
-# Version: 23 October 2018
+# For reference, SMuRF bias line resistances are about 2kOhms in high current mode, 
+# 20kOhms in low current mode. 
+#
+# MCE DAC units are 16-bit, but the full dynamic range doesn't look like it is used. 
+# Therefore MCE units 65000 (in trans_TES) will bypass this conversion and just 
+# command a SMuRF delatch.
+#
+# Conversions are based on:
+# mce_full_loadcurve = bias high 12000 DAC units = 1.5V high current mode
+#
+# CY 20181223
 
-# DAC resolution as number of bits
-BIAS_BITS=16
+HIGH_CURRENT_MODE=true # which bias line resistors are being used in SMuRF cryocard
+high_low_ratio=10.15 # measured by Dan and Cyndia 20181217 on cryocard C01-01
 
-# The DAC max output voltage (V)
-BIAS_MAX=2.5
-
-# The bias resistor (Ohm)
-BIAS_R=400.0
-
-# Prints the current value (uA) that is equivalent to the input DAC counts
-echo "scale=6; 1000000.0 * $BIAS_MAX / (2^($BIAS_BITS - 1)) * $1 / $BIAS_R" | bc
-
-
+if $HIGH_CURRENT_MODE; then
+    echo "scale=6; $1 / 8000." | bc
+else
+    echo "scale=6; $1 * high_low_ratio / 8000." | bc
+fi

@@ -6,6 +6,26 @@
 # Version: 23 October 2018
 
 
+# this is taken from the mce version of check_disable_reset
+host=`hostname`;
+
+# assumes host has the form bicep99
+# all letters followed by a number.
+# remover the letters portion from the hostname
+hostnum=`echo $host | sed 's#^[A-Za-z]*##'`
+
+quitsig="quit${hostnum}"
+donesig="done${hostnum}"
+
+
 echo "Soft reset SMURF..."
 $HOME/smurf_cmd --soft-reset 
+$HOME/smurf_cmd --check-lock # currently this is empty
+
+# send both host specific and generic done signals
+
+$GCP_DIR/../scripts/keck/controlSystem command "log \"check_disable_reset completed on host $host\""
+
+$GCP_DIR/../scripts/keck/controlSystem command "signal/send $donesig"
+$GCP_DIR/../scripts/keck/controlSystem command "signal/send done"
 

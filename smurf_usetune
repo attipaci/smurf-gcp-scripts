@@ -6,6 +6,10 @@
 # Version: 23 October 2018
 
 
+# do we need to stop acq to be safe?
+
 echo "Use SMURF tuning at $1..."
 $HOME/smurf_cmd --use-tune $1
 
+# signal done
+$GCP_DIR/../scripts/keck/controlSystem command 'signal/send done'

@@ -4,8 +4,28 @@
 #
 # Author: Attila Kovacs
 # Version: 23 October 2018
-
+#
+# Updated 20190108 CY: get the tuning status and dump it to the place that 
+#                      keck32 cronjob looks for tunings...
+#
+# Updated 20190206 AK: Simpler file timestamping without awk
 
 echo "Auto-tune SMURF..."
 $HOME/smurf_cmd --tune 
+# catch error signals?
+
+# send a signal saying we're done, GCP can move on from here
+$GCP_DIR/../scripts/keck/controlSystem command 'signal/send done34'
+
+
+echo "Getting tuning parameters and dumping to file"
+
+# AK 2019-02-06: a simpler implementation for date-specific filenames...
+filename=$(date +%y%m%d_%H%M%S)_smurf_tuning.cfg
+filepath=/data/keckdaq/tuning/$filename
+
+$HOME/smurf_cmd --status > $filepath
+
+# send signal that we're done?
+$GCP_DIR/../scripts/keck/controlSystem command 'signal/send done'
 

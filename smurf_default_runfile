@@ -8,3 +8,4 @@
 
 cat $HOME/smurf/scripts/runfile.default > /data/cryo/mas_data_pipe.run
 
+return $?

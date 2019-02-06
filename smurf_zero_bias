@@ -8,4 +8,3 @@
 
 echo "Disable SMURF TES bias..."
 $HOME/smurf_cmd --tes-bias --bias-voltage 0
-

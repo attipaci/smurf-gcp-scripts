@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+#
+#
+# quick script to check whether we are in smurf or mce mode
+#
+# CY 20181122
+
+output=$(ls -l /usr/mce/bin/mce_status | grep "\.smurf")
+
+if [ -n "$output" ] ; then
+  echo "smurf version"
+else
+  echo "mce version"
+fi
+

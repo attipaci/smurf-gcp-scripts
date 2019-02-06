@@ -7,28 +7,56 @@
 #   1 -- Number of frames to acquire, or <= 0 for continuous
 #   2 -- Readout card (1-4) or 's' for all. (Ignored by SMuRF)
 #   3 -- (optional) New number of frames to average before send (SMuRF ignored)
-#   4 -- (optional) Number of rows to send
+#   4 -- (optional) Number of rows to send (SMuRF ignores for now)
 #
 # Author: Attila Kovacs
 # Version: 15 November 2018
+#
+# Edited 20181120 CY at Pole to take out confusing arguments. All info derived from syncbox.
+# Updated 20181124 CY at Pole: adding in runfile gneration.
+# 
 
-SCRIPTS="$HOME/smurf/scripts"
+# load the syncbox parameters in
+# CY: do we need to wait for the other mce's to command something to change?
+# AK: Changes should have happened before start)acq is called. This just pulls
+#     the trigger. Start taking data right away...
+ssh -t keck31 bin/syncbox/syncbox-extract.py > $HOME/smurf/scripts/state/syncbox
 
-# If a data_rate argument is given that use it to override the syncbox value
-if [ "$#" -ge "3" ] ; then
-  DATA_RATE=$3
+# Load the syncbox parameters (shell vars) from the file just created...
+source $HOME/smurf/scripts/state/syncbox
+
+echo $1 > $HOME/smurf/scripts/state/nframes
+echo $2 > $HOME/smurf/scripts/state/rc
+echo $ROW_LEN > $HOME/smurf/scripts/state/row_len
+
+if [ "$#" -ge "3" ]; then
+    if [$DATA_RATE -ne $3]; then
+	DATA_RATE=$3 # override the data rate if it's different from syncbox
+	# something else will change it so we are just stuffing the header
+    fi
 fi
 
-echo $1 > $SCRIPTS/state/nframes
-echo $2 > $SCRIPTS/state/rc
+# dump it to state
+echo $DATA_RATE > $HOME/smurf/scripts/state/date_rate
 
+# AK: The part below is for full MCE compatbility, even though this does not
+#     affect SMuRF directly. But, should GCP send the num_rows_reported
+#     argument, we take note of it, so we can report it back if needed.
 if [ "$#" -ge "4" ] ; then
-  echo $4 > $SCRIPTS/state/num_rows_reported
+  NUM_ROWS_REP=$4
+  echo $NUM_ROWS_REP > $HOME/smurf/scripts/state/num_rows_rep # dump to state
+else
+  NUM_ROWS_REP=$NUM_ROWS
+  echo $NUM_ROWS_REP > $HOME/smurf/scripts/state/num_rows_rep
 fi
 
-echo "Updating runfile..."
-$SCRIPTS/smurf_make_runfile
+# need to make and dump runfile to match mce_fast_pipe.
+# AK: We need the SMuRF version of the runfile...
+$HOME/smurf/scripts/smurf_make_runfile
+
+# CY: I am going to assume for now that everything is from syncbox so everything matches
+
 
 echo "Start acquisition with SMURF..."
-$HOME/smurf_cmd --start-acq --n-frames $1 --num-rows-reported $4
+$HOME/smurf_cmd --start-acq --n-frames $1 --row-len $ROW_LEN --data-rate $DATA_RATE --num-rows $NUM_ROWS --num-rows-reported $NUM_ROWS_REP
 

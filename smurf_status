@@ -1,0 +1,9 @@
+#!/bin/bash
+#
+# moral equivalent to mce_status
+# our runfiles are meaningless so this dumps something with more useful information
+#
+# recommend piping output to a file to save somewhere
+# to do: figure out how to format this in a non stupid way
+
+$HOME/smurf_cmd --status
