@@ -1,0 +1,39 @@
+#!/bin/bash
+#
+# Sends a signal back to GCP. If the signal is not 0 (success) it exists with
+# the signal.
+#
+# Usage: 
+#  (a) source gcp_signal <result> [addnum]	# exits caller script on error
+#  (b) gcp_signal <result> [addnum]		# does not exit caller script
+#
+#    result	0 -> "done", otherwise "quit"
+#    addnum 	(optional) 1: Append host number to signal
+#
+# Author: Attila Kovacs
+# Version: 7 February 2019
+#
+
+result=$1
+
+hostnum=""
+
+if [ ! -z "$2" ] ; then
+  hostnum=`hostname | sed 's#^[A-Za-z]*##'`
+fi
+
+if [ $result -eq 0 ] ; then
+  signal="done"
+else
+  signal="quit"
+fi
+
+echo "Sending signal $signal$hostnum to GCP."
+
+# send a signal saying we're done, GCP can move on from here
+$GCP_DIR/../scripts/keck/controlSystem command "signal/send $signal$hostnum"
+
+if [ ! $result -eq 0 ] ; then
+  exit $result
+fi
+

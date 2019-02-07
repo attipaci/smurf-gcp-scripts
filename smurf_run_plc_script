@@ -5,18 +5,18 @@
 # Author: Attila Kovacs
 # Version: 23 October 2018
 
-PLC_FILE=$HOME/smurf/scripts/state/plc.parms
+SCRIPTS="$HOME/smurf/scripts"
+PLC_FILE=$SCRIPTS/state/plc.parms
 
 source $PLC_FILE
 
 if [ "$STREAM_ON" -gt "0" ] ; then
- $HOME/smurf/scripts/smurf_make_runfile
- $HOME/smurf/scripts/smurf_frameacq_stamp >> /data/cryo/mas_data_pipe.run
+ $SCRIPTS/smurf_make_runfile
+ $SCRIPTS/smurf_frameacq_stamp >> /data/cryo/mas_data_pipe.run
 fi
 
 echo "Generate a partial IV curve SMURF..."
-#HOME/smurf_cmd --slow-iv --iv-bias-high-current $BIAS_START --iv-bias-low-current 0 --iv-bias-step-current $BIAS_STEP --iv-wait-time $BIAS_DWELL
 $HOME/smurf_cmd --plc --iv-bias-high $BIAS_START --iv-bias-step $BIAS_STEP --iv-wait-time $BIAS_DWELL
 
-# send signal that we are done
-$GCP_DIR/../scripts/keck/controlSystem command "signal/send done"
+# Send completion signal to GCP (exits on error)...
+source $SCRIPTS/gcp_signal $?

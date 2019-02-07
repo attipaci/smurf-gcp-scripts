@@ -12,10 +12,12 @@
 # Author: Attila Kovacs
 # Version: 23 October 2018
 
+
 BIAS_INCREMENT=20
 DWELL=5
 INTERVAL=3
 
+SCRIPTS="$HOME/smurf/scripts"
 
 if [ "$#" -ge "1" ] ; then
   BIAS_INCREMENT=$1
@@ -32,3 +34,7 @@ fi
 echo "SMURF bias bumping..."
 
 $HOME/smurf_cmd --tes-bump --tes-bump-wait $DWELL
+
+# Send completion signal to GCP (exits on error)...
+source $SCRIPTS/gcp_signal $?
+

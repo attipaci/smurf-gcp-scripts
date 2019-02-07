@@ -5,11 +5,13 @@
 # Author: Attila Kovacs
 # Version: 23 October 2018
 
+SCRIPTS="$HOME/smurf/scripts"
 
-# do we need to stop acq to be safe?
+# CY: do we need to stop acq to be safe?
+# AK: No, GCP and schedules are supposed to make sure of that before calling...
 
 echo "Use SMURF tuning at $1..."
 $HOME/smurf_cmd --use-tune $1
 
-# signal done
-$GCP_DIR/../scripts/keck/controlSystem command 'signal/send done'
+# Send completion signal to GCP (exits on error)...
+source $SCRIPTS/gcp_signal $?

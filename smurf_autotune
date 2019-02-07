@@ -10,13 +10,13 @@
 #
 # Updated 20190206 AK: Simpler file timestamping without awk
 
+SCRIPTS="$HOME/smurf/scripts"
+
 echo "Auto-tune SMURF..."
 $HOME/smurf_cmd --tune 
-# catch error signals?
 
-# send a signal saying we're done, GCP can move on from here
-$GCP_DIR/../scripts/keck/controlSystem command 'signal/send done34'
-
+# Send completion signal to GCP with host num (exits on error)
+source $SCRIPTS/gcp_signal $? 1
 
 echo "Getting tuning parameters and dumping to file"
 
@@ -26,6 +26,5 @@ filepath=/data/keckdaq/tuning/$filename
 
 $HOME/smurf_cmd --status > $filepath
 
-# send signal that we're done?
-$GCP_DIR/../scripts/keck/controlSystem command 'signal/send done'
+
 

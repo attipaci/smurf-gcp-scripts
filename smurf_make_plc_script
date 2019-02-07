@@ -13,7 +13,8 @@
 # Author: Attila Kovacs
 # Version: 23 October 2018
 
-BIAS_CONVERT="$HOME/smurf/scripts/smurf_bias_convert"
+SCRIPTS="$HOME/smurf/scripts"
+BIAS_CONVERT="$SCRIPTS/smurf_bias_convert"
 
 STREAM_ON="0"
 BIAS_START=`$BIAS_CONVERT 5000`
@@ -39,7 +40,7 @@ if [ "$#" -ge "4" ] ; then
 fi
 
 
-PLC_FILE=$HOME/smurf/scripts/state/plc.parms
+PLC_FILE=$SCRIPTS/state/plc.parms
 
 if [ -f $PLC_FILE ] ; then
   rm -f $PLC_FILE
@@ -55,12 +56,10 @@ echo "BIAS_START=$BIAS_START" >> $PLC_FILE
 echo "BIAS_STEP=$BIAS_STEP" >> $PLC_FILE
 echo "BIAS_DWELL=$BIAS_DWELL" >> $PLC_FILE
 
-RESULT=$?
+result=$?
 
 echo "Created temporary partial load-curve parameter file."
 
-#return $RESULT
-echo $RESULT
+# Send completion signal to GCP (exits on error)...
+source $SCRIPTS/gcp_signal $result
 
-# signal done
-$GCP_DIR/../scripts/keck/controlSystem command "signal/send done"
